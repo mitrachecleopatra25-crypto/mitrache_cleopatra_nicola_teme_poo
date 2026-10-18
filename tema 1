@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Gradina {
+ static int id_global;
+ int nrFlori;
+ string denumire;
+ float suprafata;
+ const int id;
+
+public:
+ Gradina():id(++id_global){
+ this->denumire="Gradina Default";
+ this->nrFlori=0;
+ this->suprafata=0.0;
+ }
+ Gradina(string denumire,int nrFlori, float suprafata):id(++id_global){
+ this->denumire=denumire;
+ this->nrFlori=nrFlori;
+ this->suprafata=suprafata;
+ }
+
+void afisare(){
+ cout<<"Id: "<<id<<"/n";
+ cout<<"Nume "<<denumire<<"/n";
+ cout<<"Suprafata "<<suprafata<<"/n";
+}
+
+bool verificareSuprafata(){
+ if(suprafata < 50.0) return true;
+ return false;
+}
+};
+
+int Gradina::id_global=0;
+
+int main(){
+ Gradina g1;
+ Gradina g2("Demetra",13,23.0);
+ Gradina g3("Test",10,53);
+
+g1.afisare();
+g2.afisare();
+g3.afisare();
+
+cout<<"Verificare g2: "<<g2.verificareSuprafata()<<"/n";
+cout<<"Verificare g3: "<<g3.verificareSuprafata()<<"/n";
+
+return 0;
+}
+
