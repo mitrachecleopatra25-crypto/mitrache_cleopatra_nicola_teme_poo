@@ -1,0 +1,44 @@
+#include<iostream>
+#include<cstring>
+#include <string>
+using namespace std;
+
+
+
+class Echipa{
+    int nrJucatori;
+    char* numeAntrenor;
+    string numeJucatori[11];
+    const int id;
+    static int id_global;
+
+public:
+    Echipa(int nrJucaori,const char* numeAntrenor,const string numeJucatori[3]):id(++id_global){
+        this->nrJucatori = nrJucaori;
+        this->numeAntrenor = new char[strlen(numeAntrenor) - 1];
+        strcpy(this->numeAntrenor,numeAntrenor);
+        for(int i=0; i<3;i++)
+            this->numeJucatori[i] = numeJucatori[i];
+    }
+    
+    char* getNumeAntrenor(){
+        return numeAntrenor;
+    }
+    
+    ~Echipa(){
+        delete [] numeAntrenor;
+    }
+};
+
+int Echipa::id_global = 0;
+
+
+int main(){
+    
+    string echipa[3] = {"Gavi","Rapinha","Pedri"};
+    
+    Echipa Barca(10,"Hansi Flick",echipa);
+
+    cout<<Barca.getNumeAntrenor();
+    return 0;
+}
