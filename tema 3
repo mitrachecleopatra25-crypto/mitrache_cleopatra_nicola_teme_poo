@@ -1,0 +1,107 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include<cstring>
+#include<string>
+
+using namespace std;
+
+class Carte {
+private:
+    char* titlu;
+    char* autor;
+    int anPublicare;
+    int nrPagini;
+    //float* pagina;
+    const int id;
+    static int id_global;
+
+public:
+    Carte(const char* titlu = "Ion", const char* autor = "Liviu", int anPublicare = 1920, int nrPagini = 300) :id(++id_global) {
+        this->anPublicare = anPublicare;
+        this->nrPagini = nrPagini;
+        this->titlu = new char[strlen(titlu) + 1];
+        strcpy(this->titlu, titlu);
+        this->autor = new char[strlen(autor) + 1];
+        strcpy(this->autor, autor);
+        //for (int i = 0;i < this->nrPagini;i++)
+        //{
+        //    this->pagina[i] = pagina[i];
+        //}
+    }
+
+    Carte(const Carte& c) :id(c.id) {
+        this->anPublicare = c.anPublicare;
+        this->nrPagini = c.nrPagini;
+        //delete[] pagina;
+        delete[] titlu;
+        delete[] autor;
+        this->titlu = new char[strlen(c.titlu) + 1];
+        strcpy(this->titlu, c.titlu);
+        this->autor = new char[strlen(c.autor) + 1];
+        strcpy(this->autor, c.autor);
+        //for (int i = 0;i < this->nrPagini;i++)
+        //{
+        //    this->pagina[i] = c.pagina[i];
+        //}
+    }
+
+    void operator=(const Carte& c) {
+        this->anPublicare = c.anPublicare;
+        this->nrPagini = c.nrPagini;
+        //delete[] pagina;
+        delete[] titlu;
+        delete[] autor;
+        this->titlu = new char[strlen(c.titlu) + 1];
+        strcpy(this->titlu, c.titlu);
+        this->autor = new char[strlen(c.autor) + 1];
+        strcpy(this->autor, c.autor);
+    }
+
+    ~Carte() {
+        if (this->titlu != nullptr)
+            delete[] titlu;
+        if (this->autor != nullptr)
+            delete[] autor;
+        //if (this->pagina != nullptr)
+        //    delete[] pagina;
+    }
+
+    void afisareCarte() {
+        cout << "anul este " << anPublicare << endl;
+        cout << "cartea are " << nrPagini << " pagini " << endl;
+        cout << "autorul este " << autor << endl;
+        cout << "titlul este " << titlu << endl;
+        //for (int i = 0;i < nrPagini;i++)
+        //{
+        //    cout << "mesaj" << pagina[i] << " ";
+        //}
+        cout << endl;
+    }
+
+    char* getTitlu() {
+        return titlu;
+    }
+
+    void setNr(int a) {
+        nrPagini = a;   
+    }
+
+
+
+};
+int Carte::id_global = 0;
+
+int main() {
+    Carte c1;
+    c1.afisareCarte();
+    Carte c2("Baltagul", "Sadoveanu", 1930, 200);
+    c2.afisareCarte();
+
+    Carte c3 = c2;
+
+    c3.afisareCarte();
+
+    c3 = c1;
+
+    c3.afisareCarte();
+}
