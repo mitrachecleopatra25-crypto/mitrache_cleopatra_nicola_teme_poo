@@ -1,0 +1,134 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstring>
+#include<string>
+
+using namespace std;
+
+class Scoala {
+private:
+	int nrElevi;
+	int nrProfesori;
+	string* numeProfesori;
+	char* numeDirector;
+	char* numeGardian;
+	const int id;
+	static int id_global;
+	int nrMaterii;
+	int* noteMaterii;
+public:
+
+	Scoala():id(0) {
+		this->nrElevi = 30;
+		this->nrProfesori = 3;
+		this->nrMaterii = 4;
+		this->numeProfesori = new string[this->nrProfesori];
+		string nume2[] = {"Cosmin","teo","radu"};
+		for (int i = 0;i < this->nrProfesori;i++)
+		{
+			numeProfesori[i] = nume2[i];
+		}
+		this->numeDirector = new char[strlen("Bogdan") + 1];
+		strcpy(this->numeDirector, "Bogdan");
+		this->numeGardian = new char[strlen("Mitica") + 1];
+		strcpy(this->numeGardian, "Mitica");
+		this->noteMaterii= new int[this->nrMaterii];
+		int note[] = { 2,6,7,8 };
+		for (int i = 0;i < this->nrMaterii;i++)
+		{
+			this->noteMaterii[i] =note[i];
+		}
+
+	}
+
+	Scoala(int nrElevi, int nrProfesori, int nrMaterii, const char* numeDirector, const char* numeGardian, int* noteMaterii) :id(++id_global) {
+		this->nrElevi = nrElevi;
+		this->nrProfesori = nrProfesori;
+		this->nrMaterii = nrMaterii;
+		this->numeDirector = new char[strlen(numeDirector) + 1];
+		strcpy(this->numeDirector, numeDirector);
+		this->numeGardian = new char[strlen(numeGardian) + 1];
+		strcpy(this->numeGardian, numeGardian);
+		this->noteMaterii = new int[nrMaterii];
+		for (int i = 0;i < this->nrMaterii;i++)
+		{
+			this->noteMaterii[i] = noteMaterii[i];
+		}
+	}
+	
+	
+	Scoala(const Scoala& c) :id(++id_global) {
+		this->nrElevi = c.nrElevi;
+		this->nrProfesori = c.nrProfesori;
+		this->nrMaterii = c.nrMaterii;
+		delete[] numeDirector;
+		delete[] numeGardian;
+		delete[] noteMaterii;
+		this->numeDirector = new char[strlen(c.numeDirector) + 1];
+		strcpy(this->numeDirector, c.numeDirector);
+		this->numeGardian = new char[strlen(c.numeGardian) + 1];
+		strcpy(this->numeGardian, c.numeGardian);
+		this->noteMaterii = new int[c.nrMaterii];
+		for (int i = 0;i < this->nrMaterii;i++)
+		{
+			this->noteMaterii[i] = c.noteMaterii[i];
+		}
+	}
+
+	void operator=(const Scoala& c) {
+		this->nrElevi = c.nrElevi;
+		this->nrProfesori = c.nrProfesori;
+		this->nrMaterii = c.nrMaterii;
+		delete numeDirector;
+		delete numeGardian;
+		delete[] noteMaterii;
+		this->numeDirector = new char[strlen(c.numeDirector) + 1];
+		strcpy(this->numeDirector, c.numeDirector);
+		this->numeGardian = new char[strlen(c.numeGardian) + 1];
+		strcpy(this->numeGardian, c.numeGardian);
+		this->noteMaterii = new int[c.nrMaterii];
+		for (int i = 0;i < this->nrMaterii;i++)
+		{
+			this->noteMaterii[i] = c.noteMaterii[i];
+		}
+	}
+
+	~Scoala() {
+		if (this->numeDirector != nullptr)
+			delete[] numeDirector;
+		if (this->numeGardian != nullptr)
+			delete[] numeGardian;
+		if (this->noteMaterii != nullptr)
+			delete[] noteMaterii;
+
+	}
+
+	void afisarescoala() {
+		cout << "id ul este " << id << endl;
+		cout << "nr elevi este " << nrElevi << endl;
+		cout << "nr profesori este " << nrProfesori << endl;
+		cout << "nr materii este " << nrMaterii << endl;
+		cout << "nume director este " << numeDirector << endl;
+		cout << "nume gardian este " << numeGardian << endl;
+		for (int i = 0;i < nrMaterii;i++)
+		{
+			cout << "notele sunt " << noteMaterii[i] << endl;
+		}
+	}
+
+
+};
+
+int Scoala::id_global = 0;
+
+int main() {
+	Scoala s1;
+	s1.afisarescoala();
+
+	int* noteMaterii = new int[4] { 3,7,8,9};
+	Scoala* s2=new Scoala(30, 13, 4, "Vasile", "Bobo", noteMaterii);
+	s2->afisarescoala();
+	delete s2;
+
+
+}
