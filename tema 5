@@ -1,0 +1,79 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstring>
+#include<string>
+
+using namespace std;
+
+class Pacient {
+private:
+	char* nume;
+	int varsta;
+	int nrMasuratori;
+	int* glicemie;
+	bool bolnav;
+public:
+	static int nrPacienti;
+	Pacient(const char* nume, int varsta, int nrMasuratori, int* glicemie, bool bolnav) {
+		this->nume = new char[strlen(nume) + 1];
+		strcpy(this->nume, nume);
+		if (this->varsta >= 0 && this->varsta <= 120) this->varsta = varsta;
+		this->nrMasuratori = nrMasuratori;
+		this->glicemie = new int[nrMasuratori];
+		for (int i = 0;i < this->nrMasuratori;i++) 
+		{
+			this->glicemie[i] = glicemie[i];
+		}
+		this->bolnav = bolnav;
+
+		nrPacienti++;
+	}
+
+	static int getnrPacienti() {
+		return nrPacienti;
+	}
+
+	int difmaxim() {
+		int max = 0;
+		int s;
+		for (int i = 0;i < this->nrMasuratori;i++) {
+			&glicemie[i] - &glicemie[i-1] == s;
+				if (s > max) max = s;
+		}
+		return s;
+	}
+
+	~Pacient() {
+		delete[]nume;
+		delete[]glicemie;
+	}
+
+	void afisare() {
+		cout<<"Numele pacient este"<<nume<<endl;
+		cout<<"Varsta pacient este "<<varsta<<endl;
+		cout<<"Nr masura este "<<nrMasuratori<<endl;
+		for (int i = 0;i < nrMasuratori;i++)
+		{
+			cout << "Glicemia persoanei este " << glicemie[i]<<endl;
+		}
+		if (bolnav = 0) cout << "Pacientul este sanatos";
+		else cout << "Pacientul nu e sanatos";
+
+	}
+
+	
+};
+
+int Pacient::nrPacienti = 0;
+
+int main() {
+
+	char* nume =new char[strlen("Mihai")+1];
+	strcpy(nume, "Mihai");
+	int* glicemie = new int[3] {2, 4, 6};
+	Pacient* p = new Pacient(nume, 67, 3, glicemie, 1);
+	p->afisare();
+	delete p;
+
+
+}
