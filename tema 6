@@ -1,0 +1,211 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstring>
+#include<string>
+
+using namespace std;
+
+
+class Laptop {
+private:
+	int nrTaste;
+	int nrPart;
+	char* numeLaptop;
+	float* dimPart;
+	string culoare;
+	bool camera;
+	const int id;
+	static int id_global;
+public:
+	Laptop():id(++id_global) {
+		this->nrTaste = 0;
+		this->dimPart = nullptr;
+		this->nrPart = 0;
+		this->numeLaptop = nullptr;
+		this->culoare = "";
+		this->camera = 0;
+
+	}
+	Laptop(const int nrTaste,const char* numeLaptop,int nrPart,const float* dimPart,const string culoare, bool camera) :id(++id_global) {
+		this->nrTaste =nrTaste;
+		this->nrPart = nrPart;
+		this->numeLaptop =new char[strlen(numeLaptop)+1];
+		strcpy(this->numeLaptop, numeLaptop);
+		this->dimPart = new float[nrPart];
+		for (int i = 0;i <nrPart;i++)
+		{
+			this->dimPart[i] = dimPart[i];
+		}
+		this->culoare =culoare;
+		this->camera =camera;
+	}
+	Laptop(const Laptop& l) :id(++id_global){
+		this->nrTaste = l.nrTaste;
+		this->nrPart = l.nrPart;
+		if (numeLaptop != nullptr)
+		{
+			this->numeLaptop = new char[strlen(l.numeLaptop) + 1];
+			strcpy(this->numeLaptop, l.numeLaptop);
+		}
+		if (dimPart != nullptr) {
+			this->dimPart = new float[l.nrPart];
+			for (int i = 0;i < l.nrPart;i++)
+			{
+				this->dimPart[i] = l.dimPart[i];
+			}
+		}
+		this->culoare = l.culoare;
+		this->camera = l.camera;
+	}
+
+	Laptop& operator=(const Laptop& l) {
+		this->nrTaste = l.nrTaste;
+		this->nrPart = l.nrPart;
+		if (numeLaptop != nullptr) {
+			delete[] numeLaptop;
+			numeLaptop = nullptr;
+		}
+		if (l.numeLaptop != nullptr) {
+			this->numeLaptop = new char[strlen(l.numeLaptop) + 1];
+			strcpy(this->numeLaptop, l.numeLaptop);
+		}
+		if (dimPart != nullptr) {
+			delete[] dimPart;
+			dimPart = nullptr;
+		}
+		if (l.dimPart != nullptr) {
+			this->dimPart = new float[l.nrPart];
+			for (int i = 0;i < l.nrPart;i++)
+			{
+				this->dimPart[i] = l.dimPart[i];
+			}
+		}
+		this->culoare = l.culoare;
+		this->camera = l.camera;
+		return *this;
+	}
+
+	~Laptop() {
+		delete[]dimPart;
+		delete[]numeLaptop;
+	}
+
+	int getnrTaste() {
+		return nrTaste;
+	}
+	int getnrPart() {
+		return nrPart;
+	}
+	string getculoare() {
+		return culoare;
+	}
+	bool getcamera() {
+		return camera;
+	}
+	char* getnumeLaptop() {
+		char* nume2Laptop = new char[strlen(numeLaptop) + 1];
+		strcpy(nume2Laptop, numeLaptop);
+		return nume2Laptop;
+	}
+	float* getdimPart() {
+		float* dim2Part = new float[nrPart];
+		for (int i = 0;i < nrPart;i++)
+		{
+			dim2Part[i] = dimPart[i];
+		}
+		return dim2Part;
+	}
+
+	void setnrTaste(int n) {
+		nrTaste = n;
+	}
+	void setnrPart(int n) {
+		 nrPart=n;
+	}
+	void setculoare(string a) {
+		culoare=a;
+	}
+	void setcamera(bool a) {
+		camera=a;
+	}
+	
+	void setnumeLaptop(const char*nume) {
+		if (numeLaptop != nullptr) delete[] numeLaptop;
+		numeLaptop = new char[strlen(nume) + 1];
+		strcpy(numeLaptop, nume);
+	}
+	void setdimPart(float*dim,int nr) {
+		if (dimPart != nullptr) delete[] dimPart;
+		setnrPart(nr);
+		dimPart = new float[nrPart];
+		for (int i = 0;i < nrPart;i++)
+		{
+			dimPart[i] = dim[i];
+		}
+	}
+	void afisareLaptop() {
+		cout << "ID= " << id << endl;
+		cout << "nr taste= " << nrTaste<<endl;
+		if (numeLaptop != nullptr) cout << "nume= " << numeLaptop << endl;
+		else cout << "Nesetat\n";
+		cout << "nr partitii= " << nrPart << endl;
+		if (dimPart != nullptr)
+			for (int i = 0;i < nrPart;i++)
+			{
+				cout << "partitia " << i << " are dim " << dimPart[i] << " ";
+			}
+		else cout << "Partitii nesetate\n";
+		cout << endl;
+		if (camera) cout << "are camera" << endl;
+		else cout << "nu are camera" << endl;
+		cout << endl;
+	}
+
+
+	Laptop operator+ (const Laptop& l1) {
+		Laptop aux = *this;
+		aux.nrTaste +=l1.nrTaste;
+		return aux;
+	}
+	Laptop operator+(int x) {
+		Laptop aux = *this;
+		aux.nrTaste += x;
+		return aux;
+	}
+
+	float operator[](int i) {
+		if (i >= 0 && i < nrPart)
+			return dimPart[i];
+
+	}
+
+};
+
+int Laptop::id_global = 0;
+
+int main() {
+	Laptop l1, l2;
+	l1 = l2; // se apeleaza operatorul =
+	Laptop l3(l1); // Laptop l3 = l1 <=> Laptop l3(l1); se apeleaza copy constructor
+	float *dimi = new float[3] { 23,27,35 };
+	Laptop* l4=new Laptop(30, "Sony", 3, dimi, "alb", 0);
+	float l[2] = { 13.5,11.9 };
+	Laptop l5(13,"Lenovo",2,l,"negru",1);
+	l1.afisareLaptop();
+	l4->afisareLaptop();
+	l5.afisareLaptop();
+
+	cout << "Numele laptopului 5 este: " << l5.getnumeLaptop() <<"\n";
+	l5.setnumeLaptop("Digi");
+	cout << "Numele laptopului 5 este: " << l5.getnumeLaptop()<<"\n";
+
+	l1 = l1 + l5;
+
+	cout << "Nr taste Laptop 1: " << l1.getnrTaste()<<"\n";
+
+	cout << l5[1];
+
+	delete l4;
+	delete[] dimi;
+	return 0;
+}
